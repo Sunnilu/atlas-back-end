@@ -4,6 +4,25 @@ import requests
 import sys
 
 def fetch_employee_todo_progress(employee_id):
+    """
+    Fetches and displays the TODO list progress for a given employee ID.
+
+    Args:
+    - employee_id (int): The ID of the employee whose TODO list progress is to be fetched.
+
+    Prints:
+    - Displays the employee's TODO list progress in the specified format.
+
+    Example output format:
+    Employee EMPLOYEE_NAME is done with tasks(NUMBER_OF_DONE_TASKS/TOTAL_NUMBER_OF_TASKS):
+        TASK_TITLE
+        TASK_TITLE
+        ...
+
+    Note:
+    - Uses the JSONPlaceholder API (https://jsonplaceholder.typicode.com/) to fetch data.
+    - Requires the 'requests' module to be installed (`pip install requests`).
+    """
     base_url = 'https://jsonplaceholder.typicode.com'
     todos_url = f'{base_url}/todos?userId={employee_id}'
     user_url = f'{base_url}/users/{employee_id}'
@@ -45,3 +64,4 @@ if __name__ == '__main__':
 
     employee_id = int(sys.argv[1])
     fetch_employee_todo_progress(employee_id)
+
