@@ -1,4 +1,4 @@
-#!/usr/bin/phytho3
+#!/usr/bin/phython3
 """ Python script to export data in the CSV format"""
 
 import requests
