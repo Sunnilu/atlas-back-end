@@ -8,18 +8,21 @@ import requests
 from sys import argv
 
 if __name__ == "__main__":
+    import requests
+    from sys import argv
+
     if len(argv) < 2:
         exit()
 
     employee_id = argv[1]
-    
+
     # Fetch employee name
     name_response = requests.get(f"https://jsonplaceholder.typicode.com/users?id={employee_id}")
     name_data = name_response.json()
-    
+
     if not name_data:
         exit(f"Employee with ID {employee_id} not found.")
-    
+
     employee_name = name_data[0]["name"]
 
     # Fetch all todos for the employee
@@ -33,5 +36,6 @@ if __name__ == "__main__":
     print(f"Employee {employee_name} is done with tasks ({len(completed_todos)}/{len(todos_data)}):")
     for todo in completed_todos:
         print(f"\t{todo['title']}")
+
 
 
