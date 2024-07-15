@@ -7,6 +7,7 @@ using JSONPlaceholder API.
 import requests
 import sys
 
+
 def fetch_employee_todo_progress(employee_id):
     """
     Fetches and displays the TODO list progress for a given employee ID.
@@ -20,12 +21,12 @@ def fetch_employee_todo_progress(employee_id):
     # Fetch employee name
     name_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
     name_data = name_response.json()
-    
+
     if not name_data:
         print(f"Employee with ID {employee_id} not found.")
         sys.exit(1)
-    
-    employee_name = name_data[0]['name']
+
+    employee_name = name_data['name']
 
     # Fetch all todos for the employee
     todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
@@ -39,6 +40,7 @@ def fetch_employee_todo_progress(employee_id):
     for todo in completed_todos:
         print(f"\t{todo['title']}")
 
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python script.py <employee_id>")
@@ -46,11 +48,3 @@ if __name__ == "__main__":
 
     employee_id = sys.argv[1]
     fetch_employee_todo_progress(employee_id)
-
-
-
-
-
-
-
-
