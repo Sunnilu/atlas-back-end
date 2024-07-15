@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Python script to export data in the CSV format"""
 
 import requests
 import sys
@@ -16,13 +17,13 @@ def fetch_employee_todo_progress(employee_id):
     user_url = f'{base_url}/users/{employee_id}'
 
     try:
-        # Fetching user information
+        """ Fetching user information """
         response = requests.get(user_url)
         response.raise_for_status()
         user_data = response.json()
         employee_name = user_data['username']  # Use 'username' instead of 'name' as per JSONPlaceholder API
 
-        # Fetching todo list for the employee
+        """ Fetching todo list for the employee """
         response = requests.get(todos_url)
         response.raise_for_status()
         todos_data = response.json()
@@ -30,7 +31,7 @@ def fetch_employee_todo_progress(employee_id):
         # Prepare CSV file name
         csv_filename = f"{USER_ID}.csv"
 
-        # Writing to CSV file
+        """ Writing to CSV file """
         with open(csv_filename, mode='w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE'])
