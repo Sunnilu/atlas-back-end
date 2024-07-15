@@ -26,7 +26,7 @@ def fetch_employee_todo_progress(employee_id):
         todos_data = response.json()
 
         # Prepare CSV file name
-        csv_filename = f"{employee_id}.csv"
+        csv_filename = f"{USER_ID}.csv"
 
         # Writing to CSV file
         with open(csv_filename, mode='w', newline='') as csv_file:
