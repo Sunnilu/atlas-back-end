@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Script that fetches and displays TODO list progress for a given employee ID using JSONPlaceholder API."""
+"""
+Script that fetches and displays TODO list progress for a given employee ID
+using JSONPlaceholder API.
+"""
 
 import requests
 import sys
@@ -28,11 +31,9 @@ if __name__ == "__main__":
         # Print TODO list progress
         print(f"Employee {employee_name} is done with tasks "
               f"({len(completed_tasks)}/{len(todos)}):")
-        
+
         for task in completed_tasks:
             print(f"\t{task}")
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-    
-      
