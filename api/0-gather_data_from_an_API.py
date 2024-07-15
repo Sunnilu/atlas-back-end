@@ -12,16 +12,21 @@ if __name__ == "__main__":
         print("Usage: python script.py <employee_id>")
         exit(1)
 
-    # Fetch employee name
-    user_response = requests.get(f"https://jsonplaceholder.typicode.com/users?id={argv[1]}")
+    employee_id = argv[1]
+    
+    # Fetch employee information
+    user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
     user_data = user_response.json()
+    
     if not user_data:
-        print(f"Employee with ID {argv[1]} not found.")
+        print(f"Employee with ID {employee_id} not found.")
         exit(1)
-    employee_name = user_data[0]['name']
+    
+    employee_name = user_data['name']
 
-    # Fetch completed todos
-    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={argv[1]}&completed=true")
+    # Fetch completed todos for the employee
+    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos",
+                                  params={"userId": employee_id, "completed": "true"})
     todos_data = todos_response.json()
     total_tasks = len(todos_data)
 
@@ -31,6 +36,8 @@ if __name__ == "__main__":
         task_list.append(f"\t{todo['title']}")
 
     # Print output
-    print(f"Employee {employee_name} is done with tasks ({len(todos_data)}/{total_tasks}):")
+    print(f"Employee {employee_name} is done with tasks "
+          f"({total_tasks}/{total_tasks}):")
     for task in task_list:
         print(task)
+
