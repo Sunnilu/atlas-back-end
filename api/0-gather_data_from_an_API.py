@@ -46,7 +46,10 @@ def fetch_employee_todo_progress(employee_id):
         total_done_tasks = len(done_tasks)
 
         # Printing the output in the required format
-        print(f"Employee {employee_name} is done with tasks ({total_done_tasks}/{total_tasks}):")
+        print(
+            f"Employee {employee_name} is done with tasks "
+            f"({total_done_tasks}/{total_tasks}):"
+        )
 
         for task in done_tasks:
             print(f"\t {task['title']}")
