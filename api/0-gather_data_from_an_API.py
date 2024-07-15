@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""script that, using this REST API, for a given employee ID"""
+"""Script that, using this REST API, for a given employee ID"""
 
 import requests
 import sys
@@ -19,10 +19,6 @@ def fetch_employee_todo_progress(employee_id):
         TASK_TITLE
         TASK_TITLE
         ...
-
-    Note:
-    - Uses the JSONPlaceholder API (https://jsonplaceholder.typicode.com/) to fetch data.
-    - Requires the 'requests' module to be installed (`pip install requests`).
     """
     base_url = 'https://jsonplaceholder.typicode.com'
     todos_url = f'{base_url}/todos?userId={employee_id}'
@@ -36,7 +32,7 @@ def fetch_employee_todo_progress(employee_id):
             return
 
         user_data = response.json()
-        employee_name = user_data['name']
+        employee_name = user_data['username']  # Corrected field name
 
         # Fetching todo list for the employee
         response = requests.get(todos_url)
@@ -63,6 +59,10 @@ if __name__ == '__main__':
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
 
-    employee_id = int(sys.argv[1])
-    fetch_employee_todo_progress(employee_id)
+    try:
+        employee_id = int(sys.argv[1])
+        fetch_employee_todo_progress(employee_id)
+    except ValueError:
+        print("Employee ID must be an integer.")
+        sys.exit(1)
 
