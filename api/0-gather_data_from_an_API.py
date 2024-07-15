@@ -14,7 +14,7 @@ def fetch_employee_todo_progress(employee_id):
 
     Args:
     - employee_id (str): The ID of the employee whose
-     TODO list progress is to be fetched.
+      TODO list progress is to be fetched.
 
     Prints:
     - Displays the employee's TODO list progress in the specified format.
@@ -29,14 +29,13 @@ def fetch_employee_todo_progress(employee_id):
 
     employee_name = name_data['name']
 
-    
     todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
     todos_data = todos_response.json()
 
     # Filter completed todos
     completed_todos = [todo for todo in todos_data if todo['completed']]
 
-    # Prepare 
+    # Prepare and print task list
     print(f"Employee {employee_name} is done with tasks ({len(completed_todos)}/{len(todos_data)}):")
     for todo in completed_todos:
         print(f"\t{todo['title']}")
