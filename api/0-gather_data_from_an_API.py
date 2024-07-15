@@ -19,8 +19,9 @@ def fetch_employee_todo_progress(employee_id):
     Prints:
     - Displays the employee's TODO list progress in the specified format.
     """
-    
-    name_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
+
+    name_response = requests.get
+    (f"https://jsonplaceholder.typicode.com/users/{employee_id}")
     name_data = name_response.json()
 
     if not name_data:
@@ -29,7 +30,8 @@ def fetch_employee_todo_progress(employee_id):
 
     employee_name = name_data['name']
 
-    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
+    todos_response = requests.get
+    (f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
     todos_data = todos_response.json()
 
     # Filter completed todos
