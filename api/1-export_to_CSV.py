@@ -1,66 +1,72 @@
 #!/usr/bin/python3
-"""Python script to export data in the CSV format"""
+"""
+Script that fetches and displays TODO list progress for a given employee ID
+using JSONPlaceholder API.
+"""
 
 import requests
 import sys
 import csv
 
+
 def fetch_employee_todo_progress(employee_id):
     """
-    Fetches TODO list progress for given employee ID from JSON API
-    exports into a CSV file named USER_ID.csv.
+    Fetches and displays the TODO list progress for a given employee ID.
 
     Args:
-    - employee_id (int): ID of employee whose TODO list progress fetched and exported.
+    - employee_id (str): The ID of the employee whose TODO list progress is to be fetched.
+
+    Prints:
+    - Displays the employee's TODO list progress in the specified format.
     """
-    base_url = 'https://jsonplaceholder.typicode.com'
-    todos_url = f'{base_url}/todos?userId={employee_id}'
-    user_url = f'{base_url}/users/{employee_id}'
+    # Fetch employee name
+    name_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
 
-    try:
-        # Fetching user information
-        response = requests.get(user_url)
-        response.raise_for_status()
-        user_data = response.json()
-        employee_name = user_data['username']
+    if name_response.status_code != 200:
+        print(f"Error fetching employee with ID {employee_id}. Status code: {name_response.status_code}")
+        sys.exit(1)
 
-        # Fetching todo list for the employee
-        response = requests.get(todos_url)
-        response.raise_for_status()
-        todos_data = response.json()
+    name_data = name_response.json()
 
-        # Prepare CSV file name
-        csv_filename = f"{employee_id}.csv"
+    if not name_data:
+        print(f"Employee with ID {employee_id} not found.")
+        sys.exit(1)
 
-        # Writing to CSV file
-        with open(csv_filename, mode='w', newline='', encoding='utf-8') as csv_file:
-            csv_writer = csv.writer(csv_file)
-            csv_writer.writerow([
-                'USER_ID', 'USERNAME',
-                'TASK_COMPLETED_STATUS', 'TASK_TITLE'
-            ])
+    employee_name = name_data['name']
 
-            for task in todos_data:
-                task_completed = "Completed" if task['completed'] else "Not Completed"
-                csv_writer.writerow([
-                    employee_id, employee_name,
-                    task_completed, task['title']
-                ])
+    # Fetch all todos for the employee
+    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
 
-        print(f"Exported TODO list for Employee ID {employee_id} to {csv_filename}")
+    if todos_response.status_code != 200:
+        print(f"Error fetching TODO list for employee with ID {employee_id}. Status code: {todos_response.status_code}")
+        sys.exit(1)
 
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
+    todos_data = todos_response.json()
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    # Filter completed todos
+    completed_todos = [todo for todo in todos_data if todo['completed']]
+
+    # Prepare and print task list
+    print(f"Employee {employee_name} is done with tasks ({len(completed_todos)}/{len(todos_data)}):")
+    for todo in completed_todos:
+        print(f"\t{todo['title']}")
+
+    # Export data in CSV format
+    csv_file_name = f"{employee_id}.csv"
+    with open(csv_file_name, mode='w', newline='') as csv_file:
+        fieldnames = ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STATUS', 'TASK_TITLE']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for todo in todos_data:
+            writer.writerow({'USER_ID': employee_id, 'USERNAME': employee_name, 'TASK_COMPLETED_STATUS': todo['completed'], 'TASK_TITLE': todo['title']})
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
 
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print("Employee ID must be an integer.")
-        sys.exit(1)
-
+    employee_id = sys.argv[1]
     fetch_employee_todo_progress(employee_id)
+
