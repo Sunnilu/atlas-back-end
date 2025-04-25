@@ -128,6 +128,3 @@ This project began as part of my Atlas School back-end curriculum. I wanted to m
 
 This project is for educational use and is open to feedback, pull requests, and collaboration.
 
----
-
-> If you learned something new or smiled reading this, consider starring ⭐️ the repo and connecting with me on LinkedIn!
